@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:yb_news/register/controller/register_controller.dart';
+import 'package:yb_news/Page/register/controller/register_controller.dart';
 
 class RegisterBinding extends Bindings {
   @override

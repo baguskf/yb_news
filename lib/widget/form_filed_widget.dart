@@ -13,6 +13,7 @@ class FromFieldWidget extends StatelessWidget {
     this.onChanged,
     this.errorText,
     this.isRequired = false,
+    this.keyboardType = TextInputType.text,
   });
 
   final String label;
@@ -22,6 +23,7 @@ class FromFieldWidget extends StatelessWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final TextInputType keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,10 @@ class FromFieldWidget extends StatelessWidget {
             controller: controller,
             validator: validator,
             onChanged: onChanged,
-
+            keyboardType: keyboardType,
+            obscureText: keyboardType == TextInputType.visiblePassword
+                ? true
+                : false,
             decoration: InputDecoration(
               filled: true,
               fillColor: AppColors.primaryWhite,

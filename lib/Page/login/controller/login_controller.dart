@@ -2,14 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yb_news/models/user_models.dart';
+import 'package:yb_news/service/auth_service.dart';
 
 class LoginController extends GetxController {
+  final AuthService _authService = AuthService();
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+
+  RxBool isLoading = false.obs;
+  RxnString errorMessage = RxnString();
 
   final emailError = RxnString();
   final passwordError = RxnString();
+
   Timer? _emailDebounce;
   Timer? _passwordDebounce;
 
@@ -78,11 +85,39 @@ class LoginController extends GetxController {
     return null;
   }
 
+  Future<UserModel?> login() async {
+    errorMessage.value = null;
+
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      errorMessage.value = "Email & Password required";
+      return null;
+    }
+
+    if (emailError.value != null || passwordError.value != null) {
+      errorMessage.value = "Please fix form errors";
+      return null;
+    }
+
+    isLoading.value = true;
+
+    try {
+      final user = await _authService.login(email, password);
+      return user;
+    } catch (e) {
+      errorMessage.value = e.toString();
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
-    confirmPasswordController.dispose();
     super.onClose();
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:yb_news/login/controller/login_controller.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:yb_news/style/colors/colors.dart';
 import 'package:yb_news/widget/form_filed_widget.dart';
 
-class LoginPageSmall extends StatelessWidget {
-  LoginPageSmall({super.key});
-  final LoginController loginController = Get.find();
+class RegisterSmall extends StatelessWidget {
+  const RegisterSmall({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,18 +35,7 @@ class LoginPageSmall extends StatelessWidget {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Hello",
-                  style: TextStyle(
-                    fontSize: 42,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Again!",
+                  "Hello!",
                   style: TextStyle(
                     fontSize: 42,
                     fontWeight: FontWeight.bold,
@@ -54,11 +43,12 @@ class LoginPageSmall extends StatelessWidget {
                   ),
                 ),
               ),
+
               const Gap(20),
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Welcome back you’ve\nbeen missed",
+                  "Signup to get Started",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black54,
@@ -66,24 +56,22 @@ class LoginPageSmall extends StatelessWidget {
                   ),
                 ),
               ),
-              const Gap(50),
-              FromFieldWidget(
-                controller: loginController.emailController,
-                validator: loginController.validateEmail,
-                onChanged: loginController.validateEmailRealtime,
-                errorText: loginController.emailError,
+              const Gap(70),
+              const FromFieldWidget(
                 label: 'Email',
                 hint: 'Enter an email address',
                 isRequired: true,
               ),
               const Gap(20),
-              FromFieldWidget(
-                controller: loginController.passwordController,
-                validator: loginController.validateLoginPassword,
-                onChanged: loginController.validatePasswordRealtime,
-                errorText: loginController.passwordError,
+              const FromFieldWidget(
                 label: 'Password',
-                hint: 'Enter Password',
+                hint: 'Enter an password',
+                isRequired: true,
+              ),
+              const Gap(20),
+              const FromFieldWidget(
+                label: 'Password Confrimation',
+                hint: 'Enter an password confirmation',
                 isRequired: true,
               ),
               const Gap(20),
@@ -105,7 +93,7 @@ class LoginPageSmall extends StatelessWidget {
                     elevation: 0,
                   ),
                   child: const Text(
-                    'Login',
+                    'Register',
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 16,
@@ -118,16 +106,16 @@ class LoginPageSmall extends StatelessWidget {
               const Gap(20),
               RichText(
                 text: TextSpan(
-                  text: "don’t have an account ?",
+                  text: "Already have an account ?",
                   style: const TextStyle(color: Colors.black54, fontSize: 14),
                   children: [
                     WidgetSpan(
                       child: GestureDetector(
                         onTap: () {
-                          Get.toNamed('/register');
+                          Get.offNamed('/login');
                         },
                         child: const Text(
-                          " Sign Up",
+                          " Login",
                           style: TextStyle(
                             color: Color(0xFF2D6CDF),
                             fontWeight: FontWeight.bold,

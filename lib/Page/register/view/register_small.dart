@@ -113,7 +113,6 @@ class RegisterSmall extends StatelessWidget {
                   child: const Text(
                     'Register',
                     style: TextStyle(
-                      fontFamily: 'Roboto',
                       fontSize: 16,
                       color: AppColors.primaryWhite,
                       fontWeight: FontWeight.bold,

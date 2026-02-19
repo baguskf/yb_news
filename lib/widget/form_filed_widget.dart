@@ -4,7 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:yb_news/style/colors/colors.dart';
 
 class FromFieldWidget extends StatelessWidget {
-  const FromFieldWidget({
+  FromFieldWidget({
     super.key,
     required this.label,
     required this.hint,
@@ -24,9 +24,11 @@ class FromFieldWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final TextInputType keyboardType;
-
+  final RxBool isObscure = true.obs;
   @override
   Widget build(BuildContext context) {
+    final isPassword = keyboardType == TextInputType.visiblePassword;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,9 +54,7 @@ class FromFieldWidget extends StatelessWidget {
             validator: validator,
             onChanged: onChanged,
             keyboardType: keyboardType,
-            obscureText: keyboardType == TextInputType.visiblePassword
-                ? true
-                : false,
+            obscureText: isPassword ? isObscure.value : false,
             decoration: InputDecoration(
               filled: true,
               fillColor: AppColors.primaryWhite,
@@ -87,6 +87,18 @@ class FromFieldWidget extends StatelessWidget {
                   width: 1.5,
                 ),
               ),
+              suffixIcon: isPassword
+                  ? IconButton(
+                      icon: Icon(
+                        isObscure.value
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        isObscure.value = !isObscure.value;
+                      },
+                    )
+                  : null,
               errorText: errorText?.value,
             ),
           ),

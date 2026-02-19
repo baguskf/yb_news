@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -11,29 +13,88 @@ class HomeController extends GetxController {
   RxList<Article> filteredArticles = <Article>[].obs;
 
   final TextEditingController searchController = TextEditingController();
+  Timer? _debounce;
+
+  final RxInt selectedIndex = 0.obs;
 
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
-  Future<List<Article>> fetchNews() async {
+  var selectedCategory = "all".obs;
+
+  final categories = [
+    "all",
+    "business",
+    "entertainment",
+    "general",
+    "health",
+    "science",
+    "sports",
+    "technology",
+  ];
+
+  //network state
+  var isOnline = true.obs;
+
+  late StreamSubscription _networkSub;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    _initNetworkListener();
+
+    fetchNews(category: selectedCategory.value);
+  }
+
+  void _initNetworkListener() async {
+    final connectivity = Connectivity();
+
+    final results = await connectivity.checkConnectivity();
+    _updateConnection(results);
+
+    _networkSub = connectivity.onConnectivityChanged.listen((results) {
+      _updateConnection(results);
+    });
+  }
+
+  void _updateConnection(List<ConnectivityResult> results) {
+    final wasOffline = !isOnline.value;
+
+    if (kIsWeb) {
+      isOnline.value =
+          results.isNotEmpty && !results.contains(ConnectivityResult.none);
+    } else {
+      isOnline.value = !results.contains(ConnectivityResult.none);
+    }
+
+    if (wasOffline && isOnline.value) {
+      fetchNews(category: selectedCategory.value);
+      searchNews(searchController.text);
+    }
+  }
+
+  Future<List<Article>> fetchNews({String? category}) async {
     try {
       isLoading.value = true;
       errorMessage.value = '';
 
-      final res = await NewsService.getNews();
-      newsListData.assignAll(res!);
-      filteredArticles.assignAll(res);
+      final res = await NewsService.getNews(
+        category: category ?? selectedCategory.value,
+      );
 
+      newsListData.assignAll(res);
+      filteredArticles.assignAll(res);
+      isOnline.value = true;
       return res;
     } catch (e) {
       errorMessage.value = e.toString();
-      return [];
+
+      throw Exception(e.toString());
     } finally {
       isLoading.value = false;
     }
   }
-
-  Timer? _debounce;
 
   void searchNews(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -59,5 +120,11 @@ class HomeController extends GetxController {
     if (date == null) return '-';
 
     return "${date.day}/${date.month}/${date.year}";
+  }
+
+  @override
+  void onClose() {
+    _networkSub.cancel();
+    super.onClose();
   }
 }

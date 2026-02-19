@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Application',
       debugShowCheckedModeBanner: false,
-      initialRoute: RoutesName.home,
+      initialRoute: RoutesName.login,
       getPages: Routes.pages,
     );
   }

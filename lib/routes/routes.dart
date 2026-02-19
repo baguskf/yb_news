@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:yb_news/Page/detail/view/detail_page.dart';
 import 'package:yb_news/Page/home/controller/home_binding.dart';
 import 'package:yb_news/Page/home/view/home_page.dart';
 import 'package:yb_news/Page/login/controller/login_binding.dart';
@@ -16,6 +17,7 @@ class Routes {
       binding: HomeBinding(),
       page: () => const HomePage(),
     ),
+    GetPage(name: RoutesName.detail, page: () => const DetailPage()),
     GetPage(
       name: RoutesName.login,
       binding: LoginBinding(),

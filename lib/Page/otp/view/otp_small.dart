@@ -47,19 +47,18 @@ class OtpSmallPage extends StatelessWidget {
               style: const TextStyle(fontSize: 16, color: Colors.black54),
               textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 40),
 
             OtpTextField(
-              numberOfFields: 4,
+              numberOfFields: 8,
               borderColor: const Color(0xff3F3D56),
               focusedBorderColor: const Color(0xff3F3D56),
-              showFieldAsBox: true,
+              showFieldAsBox: false,
               borderRadius: BorderRadius.circular(10),
-              fieldWidth: 60,
+              fieldWidth: 35,
+              fieldHeight: 60,
               keyboardType: TextInputType.visiblePassword,
-              textStyle: const TextStyle(fontSize: 20),
-
+              textStyle: const TextStyle(fontSize: 14),
               inputFormatters: [
                 TextInputFormatter.withFunction((oldValue, newValue) {
                   return newValue.copyWith(
@@ -81,8 +80,6 @@ class OtpSmallPage extends StatelessWidget {
                 }
               },
             ),
-
-            const SizedBox(height: 30),
 
             Obx(() {
               final isDisabled = otpController.remainingSeconds.value > 0;

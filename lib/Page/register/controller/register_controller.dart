@@ -3,18 +3,28 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:yb_news/models/user_models.dart';
+import 'package:yb_news/service/auth_service.dart';
 
 class RegisterController extends GetxController {
+  final AuthService _authService = AuthService();
+
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  RxBool isLoading = false.obs;
+  RxnString errorMessage = RxnString();
+
   final emailError = RxnString();
+  final nameError = RxnString();
   final passwordError = RxnString();
   final confirmPasswordError = RxnString();
   Timer? _passwordDebounce;
   Timer? _passwordConfirmDebounce;
   Timer? _emailDebounce;
+  Timer? _nameDebounce;
 
   String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -28,6 +38,36 @@ class RegisterController extends GetxController {
     }
 
     return null;
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Nama wajib diisi";
+    }
+
+    final name = value.trim();
+
+    if (name.length < 2) {
+      return "Nama minimal 2 karakter";
+    }
+
+    final regex = RegExp(r"^[a-zA-Z\s]+$");
+
+    if (!regex.hasMatch(name)) {
+      return "Nama hanya boleh huruf";
+    }
+
+    return null;
+  }
+
+  void validateNameRealtime(String value) {
+    if (_nameDebounce?.isActive ?? false) {
+      _nameDebounce!.cancel();
+    }
+
+    _nameDebounce = Timer(const Duration(milliseconds: 400), () {
+      nameError.value = validateName(value);
+    });
   }
 
   void validateEmailRealtime(String value) {
@@ -95,6 +135,39 @@ class RegisterController extends GetxController {
     _passwordConfirmDebounce = Timer(const Duration(milliseconds: 400), () {
       confirmPasswordError.value = validateConfirmPassword(value);
     });
+  }
+
+  Future<UserModel?> register() async {
+    errorMessage.value = null;
+
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final name = nameController.text.trim();
+
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      errorMessage.value = "Please fill all fields";
+      return null;
+    }
+
+    if (nameError.value != null ||
+        emailError.value != null ||
+        passwordError.value != null ||
+        confirmPasswordError.value != null) {
+      errorMessage.value = "Please fix form errors";
+      return null;
+    }
+
+    isLoading.value = true;
+
+    try {
+      final user = await _authService.register(email, password);
+      return user;
+    } catch (e) {
+      errorMessage.value = e.toString();
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override

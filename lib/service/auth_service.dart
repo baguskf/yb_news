@@ -2,25 +2,55 @@ import 'package:yb_news/data/dummy_users.dart';
 import 'package:yb_news/models/user_models.dart';
 
 class AuthService {
+  static UserModel? currentUser;
   Future<UserModel> login(String email, String password) async {
     await Future.delayed(const Duration(seconds: 1));
 
-    final user = dummyUsers.where((u) => u.email == email).toList();
+    final user = FakeUserDB.users.where((u) => u.email == email).toList();
 
     if (user.isEmpty) {
       throw "User not found";
     }
 
-    if (user.first.password != password) {
+    final current = user.first;
+
+    if (current.password != password) {
       throw "Wrong password";
     }
 
-    if (user.first.isLoggedIn) {
+    if (current.isLoggedIn) {
       throw "User already logged in";
     }
 
-    user.first.isLoggedIn = true;
+    current.isLoggedIn = true;
 
-    return user.first;
+    currentUser = current;
+
+    return current;
+  }
+
+  Future<UserModel> register(String email, String password) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final exists = FakeUserDB.users.any((u) => u.email == email);
+
+    if (exists) {
+      throw "Email already registered";
+    }
+
+    final newUser = UserModel(
+      email: email,
+      password: password,
+      isLoggedIn: false,
+    );
+
+    FakeUserDB.users.add(newUser);
+
+    return newUser;
+  }
+
+  void logout() {
+    currentUser?.isLoggedIn = false;
+    currentUser = null;
   }
 }

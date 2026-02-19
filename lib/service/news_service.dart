@@ -8,18 +8,28 @@ class NewsService {
   static final client = http.Client();
   static String get newsKey => dotenv.env['NEWS_API_KEY'] ?? '';
 
-  static String get newsUrl =>
-      "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=$newsKey";
+  static String newsUrl({String? category}) {
+    String url =
+        "https://newsapi.org/v2/top-headlines?country=us&apiKey=$newsKey";
 
-  static Future<List<Article>?> getNews() async {
-    final res = await client.get(Uri.parse(newsUrl));
+    if (category != null && category != "all") {
+      url += "&category=$category";
+    }
+
+    return url;
+  }
+
+  static Future<List<Article>> getNews({String? category}) async {
+    final res = await client.get(Uri.parse(newsUrl(category: category)));
 
     if (res.statusCode == 200) {
-      var responBody = res.body;
+      final body = res.body;
 
-      return newsModelFromJson(responBody).articles;
+      final articles = newsModelFromJson(body).articles;
+
+      return articles ?? [];
     } else {
-      throw Exception("Failed to load news: ${res.statusCode}");
+      throw Exception("Failed to load news (${res.statusCode})");
     }
   }
 }

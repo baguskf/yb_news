@@ -6,7 +6,7 @@ class OtpGenerator {
     final rand = Random.secure();
 
     return List.generate(
-      4,
+      8,
       (index) => chars[rand.nextInt(chars.length)],
     ).join();
   }

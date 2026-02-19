@@ -12,8 +12,6 @@ class LoginPageSmall extends StatelessWidget {
   final LoginController loginController = Get.find();
   @override
   Widget build(BuildContext context) {
-    loginController.emailController.text = "baguskaruniaf@gmail.com";
-    loginController.passwordController.text = "Password123";
     return Scaffold(
       backgroundColor: AppColors.primaryWhite,
       body: SafeArea(

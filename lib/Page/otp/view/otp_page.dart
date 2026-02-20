@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yb_news/Page/otp/view/otp_large.dart';
 import 'package:yb_news/Page/otp/view/otp_small.dart';
 import 'package:yb_news/utils/responsiveness.dart';
 
@@ -10,7 +11,7 @@ class OtpPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: ResponsiveWidget(
-          largeScreen: OtpSmallPage(),
+          largeScreen: OtpLargePage(),
           smallScreen: OtpSmallPage(),
         ),
       ),

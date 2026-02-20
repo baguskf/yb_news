@@ -144,7 +144,10 @@ class RegisterController extends GetxController {
     final password = passwordController.text.trim();
     final name = nameController.text.trim();
 
-    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+    if (name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
       errorMessage.value = "Please fill all fields";
       return null;
     }
@@ -160,7 +163,7 @@ class RegisterController extends GetxController {
     isLoading.value = true;
 
     try {
-      final user = await _authService.register(email, password);
+      final user = await _authService.register(name, email, password);
       return user;
     } catch (e) {
       errorMessage.value = e.toString();

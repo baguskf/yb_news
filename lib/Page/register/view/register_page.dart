@@ -11,7 +11,7 @@ class RegisterPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: ResponsiveWidget(
-          largeScreen: const RegisterLarge(),
+          largeScreen: RegisterLarge(),
           smallScreen: RegisterSmall(),
         ),
       ),

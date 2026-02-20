@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yb_news/Page/home/controller/home_controller.dart';
 import 'package:yb_news/models/news_model.dart';
+import 'package:yb_news/style/colors/colors.dart';
 
 class DetailSmall extends StatelessWidget {
   DetailSmall({super.key, required this.article});
@@ -16,8 +17,11 @@ class DetailSmall extends StatelessWidget {
     final Article article = Get.arguments;
 
     return Scaffold(
-      backgroundColor: const Color(0xffF5F6FA),
-      appBar: AppBar(title: const Text("Detail News")),
+      backgroundColor: AppColors.primaryWhite,
+      appBar: AppBar(
+        title: const Text("Detail News"),
+        backgroundColor: AppColors.primaryWhite,
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +45,6 @@ class DetailSmall extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// 📰 Judul
                   Text(
                     article.title ?? '-',
                     style: const TextStyle(

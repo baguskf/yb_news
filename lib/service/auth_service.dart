@@ -25,11 +25,12 @@ class AuthService {
     current.isLoggedIn = true;
 
     currentUser = current;
+    FakeUserDB.currentUser = current;
 
     return current;
   }
 
-  Future<UserModel> register(String email, String password) async {
+  Future<UserModel> register(String name, String email, String password) async {
     await Future.delayed(const Duration(seconds: 1));
 
     final exists = FakeUserDB.users.any((u) => u.email == email);
@@ -39,9 +40,11 @@ class AuthService {
     }
 
     final newUser = UserModel(
+      name: name,
       email: email,
       password: password,
       isLoggedIn: false,
+      isFisrtLogin: true,
     );
 
     FakeUserDB.users.add(newUser);

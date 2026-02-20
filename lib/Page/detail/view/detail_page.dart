@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yb_news/Page/detail/view/detail_large.dart';
 import 'package:yb_news/Page/detail/view/detail_small.dart';
 import 'package:yb_news/models/news_model.dart';
 import 'package:yb_news/utils/responsiveness.dart';
@@ -15,7 +16,7 @@ class DetailPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: ResponsiveWidget(
-          largeScreen: DetailSmall(article: article),
+          largeScreen: DetailLarge(article: article),
           smallScreen: DetailSmall(article: article),
         ),
       ),

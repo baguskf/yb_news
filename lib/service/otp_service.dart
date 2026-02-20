@@ -40,7 +40,7 @@ class OtpService {
     }
 
     otpStorage.remove(email);
-    return null; // success
+    return null;
   }
 
   static Duration? getRemainingTime(String email) {

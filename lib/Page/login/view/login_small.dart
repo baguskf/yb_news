@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:yb_news/Page/login/controller/login_controller.dart';
+import 'package:yb_news/data/dummy_users.dart';
 import 'package:yb_news/routes/routes_name.dart';
 import 'package:yb_news/service/otp_service.dart';
 import 'package:yb_news/style/colors/colors.dart';
@@ -108,16 +109,15 @@ class LoginPageSmall extends StatelessWidget {
                               final user = await loginController.login();
 
                               if (user != null) {
-                                OtpService.requestOtp(
-                                  loginController.emailController.text.trim(),
-                                );
-                                Get.offAllNamed(
-                                  RoutesName.otp,
-                                  arguments: loginController
-                                      .emailController
-                                      .text
-                                      .trim(),
-                                );
+                                if (user.isFisrtLogin == true) {
+                                  OtpService.requestOtp(
+                                    loginController.emailController.text.trim(),
+                                  );
+
+                                  Get.offAllNamed(RoutesName.otp);
+                                } else {
+                                  Get.offAllNamed(RoutesName.home);
+                                }
                               } else {
                                 Get.snackbar(
                                   "Login Failed",

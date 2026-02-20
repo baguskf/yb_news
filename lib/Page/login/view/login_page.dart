@@ -11,7 +11,7 @@ class LoginPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: ResponsiveWidget(
-          largeScreen: const LoginPageLarge(),
+          largeScreen: LoginPageLarge(),
           smallScreen: LoginPageSmall(),
         ),
       ),

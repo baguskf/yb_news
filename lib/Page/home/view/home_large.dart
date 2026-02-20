@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:yb_news/Page/home/controller/home_controller.dart';
-import 'package:yb_news/Page/home/view/news_page_small.dart';
 
+import 'package:yb_news/Page/home/view/news_page_large.dart';
 import 'package:yb_news/Page/home/view/profile_page.dart';
 import 'package:yb_news/style/colors/colors.dart';
 
-class HomeSmall extends StatelessWidget {
-  HomeSmall({super.key});
+class HomeLarge extends StatelessWidget {
+  HomeLarge({super.key});
   final HomeController homeController = Get.find();
 
-  final pages = [NewsPageSmall(), const ProfilePage()];
+  final pages = [NewsPageLarge(), const ProfilePage()];
 
   @override
   @override

@@ -20,6 +20,8 @@ class HomeController extends GetxController {
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
+  var refreshKey = 0.obs;
+
   var selectedCategory = "all".obs;
 
   final categories = [
@@ -33,7 +35,6 @@ class HomeController extends GetxController {
     "technology",
   ];
 
-  //network state
   var isOnline = true.obs;
 
   late StreamSubscription _networkSub;
@@ -58,7 +59,7 @@ class HomeController extends GetxController {
     });
   }
 
-  void _updateConnection(List<ConnectivityResult> results) {
+  void _updateConnection(List<ConnectivityResult> results) async {
     final wasOffline = !isOnline.value;
 
     if (kIsWeb) {
@@ -69,8 +70,11 @@ class HomeController extends GetxController {
     }
 
     if (wasOffline && isOnline.value) {
-      fetchNews(category: selectedCategory.value);
-      searchNews(searchController.text);
+      await fetchNews(category: selectedCategory.value);
+
+      if (searchController.text.isNotEmpty) {
+        searchNews(searchController.text);
+      }
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yb_news/data/dummy_users.dart';
 import 'package:yb_news/routes/routes_name.dart';
 import 'package:yb_news/service/auth_service.dart';
 import 'package:yb_news/style/colors/colors.dart';
@@ -9,6 +10,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FakeUserDB.currentUser;
     return Scaffold(
       backgroundColor: AppColors.primaryWhite,
       body: Center(
@@ -19,6 +21,20 @@ class ProfilePage extends StatelessWidget {
               radius: 60,
               backgroundColor: Colors.grey,
               child: Icon(Icons.person, size: 60, color: Colors.white),
+            ),
+
+            const SizedBox(height: 20),
+
+            Text(
+              user?.name ?? "No Name",
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              user?.email ?? "No Email",
+              style: const TextStyle(fontSize: 14, color: Colors.black87),
             ),
 
             const SizedBox(height: 20),
